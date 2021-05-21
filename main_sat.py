@@ -2,8 +2,7 @@ from sat.seq_attack import main
 
 
 class Config:
-    # cycsat = False
-    stop = 30
+    stop = 100
     depth = 10
     step = 5
     solver = 'btor'
