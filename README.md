@@ -1,7 +1,7 @@
 # RANE: Reversal Assessment of Netlist Encryption
 
 <p align="center">
-  <img width="300" src="/gate-lab/RANE/blob/master/images/Logo.png" />
+  <img width="300" src="gate-lab/RANE/blob/master/images/Logo.png" />
 </p>
 
 This repository contains the research platform which was created at George Mason University's GATE Lab to investigate
