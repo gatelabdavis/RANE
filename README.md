@@ -1,14 +1,14 @@
 # RANE: Reversal Assessment of Netlist Encryption
 
 <p align="center">
-  <img width="300" src="/Logo.png" />
+  <img width="300" src="/gate-lab/RANE/blob/master/Logo.png" />
 </p>
 
 This repository contains the research platform which was created at George Mason University's GATE Lab to investigate
 the use of formal verification tools for logic locking deobfuscation.
 
-The source code is released under a BSD-3-Clause license as basis for further research. More information on usage and
-installation of this tool could be found in the [wiki](https://github.com/gate-lab/RANE/wiki/) page.
+The source code is released under a BSD-3-Clause license as basis for further research. More information on the usage
+and installation of this tool could be found in the [wiki](/gate-lab/RANE/wiki) page.
 
 # Report
 
