@@ -285,7 +285,7 @@ class SeqAttack:
                 self.save_dips()
                 return
             elif results.assumptions_failed:
-                logging.warning("there is no more dis(es) within boundary")
+                logging.warning("two different agreeing keys could not be found for the current set of assumptions, checking uc")
                 self.save_dips()
                 self.config.depth = len(self.dip_list[-1]) + 1
                 return

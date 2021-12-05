@@ -13,7 +13,7 @@ class Config:
     module_paths = ['benchmarks/verilog/original/lat.v',
                     'benchmarks/verilog/original/dff.v']
 
-    external_lib_path = '/path/to/your/library'
+    external_lib_path = '/library'
     if os.path.isdir(external_lib_path):
         for i in lib2list(external_lib_path):
             module_paths.append(i)
