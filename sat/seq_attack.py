@@ -251,7 +251,7 @@ class PyAttack:
 
     def umc_check(self):
         # TODO: umc check has not yet implemented
-        logging.warning('umc check has not yet implemented')
+        logging.warning('umc check has not been implemented')
         return False
 
     def print_keys(self):

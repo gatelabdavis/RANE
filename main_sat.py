@@ -3,8 +3,8 @@ from sat.seq_attack import main
 
 class Config:
     stop = 100
-    depth = 10
-    step = 5
+    depth = 20
+    step = 10
     solver = 'btor'
 
 

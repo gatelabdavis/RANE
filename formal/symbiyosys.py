@@ -149,10 +149,6 @@ class SymbiInterface:
         dis = findall(r'PI_iv = (.*?);', trace)
         dis.extend(findall(r'PI_iv <= (.*?);', trace))
 
-        if self.config.enable_async:
-            keys = findall(r'PI_k1 = (.*?);', trace)
-            keys.extend(findall(r'PI_k2 = (.*?);', trace))
-        else:
-            keys = findall(r'UUT.k1 = (.*?);', trace)
-            keys.extend(findall(r'UUT.k2 = (.*?);', trace))
+        keys = findall(r'PI_k1 = (.*?);', trace)
+        keys.extend(findall(r'PI_k2 = (.*?);', trace))
         return dis, keys

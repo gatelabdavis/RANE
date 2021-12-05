@@ -143,10 +143,10 @@ class SeqAttack:
         else:
             attack_comps.get_keys_circuit_formal(dips, self.config.depth - 1, equal_keys)
 
-        ce, state_count = build_ce(self.obf_cir)
-        f = open(self.config.exe_path + 'obf_ce.v', "w")
-        f.write(ce)
-        f.close()
+        # ce, state_count = build_ce(self.obf_cir)
+        # f = open(self.config.exe_path + 'obf_ce.v', "w")
+        # f.write(ce)
+        # f.close()
 
         self.solver.gen_config('fk', skip=self.config.depth-2, depth=self.config.depth+1)
         write_verilog(attack_comps.main, "main.sv", self.config.exe_path)
@@ -287,7 +287,7 @@ class SeqAttack:
             elif results.assumptions_failed:
                 logging.warning("there is no more dis(es) within boundary")
                 self.save_dips()
-                self.config.depth = len(self.dip_list[-1])
+                self.config.depth = len(self.dip_list[-1]) + 1
                 return
             else:
                 dis, keys = self.solver.get_dis()
