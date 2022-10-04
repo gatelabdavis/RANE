@@ -21,7 +21,7 @@ class Config:
     enable_async = False
     cycsat = False
     depth = 20
-    step = 5
+    step = 10
     # solver = 'jaspergold'
     solver = 'symbiyosys'
     engine = 'yices'

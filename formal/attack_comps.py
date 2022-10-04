@@ -208,9 +208,9 @@ class AttackComponents:
         blocks = []
         for i, dip in enumerate(dip_list):
             for j, inp in enumerate(dip):
-                blocks.append(vast.Identifier('dip{}[{}] <= {};'.format(i, j, inp)))
+                blocks.append(vast.Identifier('dip{}[{}] = {};'.format(i, j, inp)))
         statement = vast.Block(blocks)
-        sens = vast.Sens(vast.Identifier('clk'), type='posedge')
+        sens = vast.Sens(None, type='all')
         inst_list.append(vast.Always(vast.SensList([sens]), statement))
 
         self.uc = vast.ModuleDef("uc", None, portslist, inst_list)
@@ -415,7 +415,8 @@ class AttackComponents:
             for j, inp in enumerate(dip):
                 blocks.append(vast.Identifier('dip{}[{}] = {};'.format(i, j, inp)))
         statement = vast.Block(blocks)
-        inst_list.append(vast.Always(senslist, statement))
+        sens = vast.Sens(None, type='all')
+        inst_list.append(vast.Always(vast.SensList([sens]), statement))
 
         # for s in range(step):
         #     blocks.append(vast.Identifier('assume (ce_state1_s{} != ce_state2_s{});'.format(s+1, s+1)))
@@ -470,13 +471,12 @@ class AttackComponents:
 
         # add initial block
         blocks = []
-        sens = vast.Sens(vast.Identifier('clk'), type='posedge')
-        senslist = vast.SensList([sens])
         for i, dip in enumerate(dip_list):
             for j, inp in enumerate(dip):
                 blocks.append(vast.Identifier('dip{}[{}] = {};'.format(i, j, inp)))
         statement = vast.Block(blocks)
-        inst_list.append(vast.Always(senslist, statement))
+        sens = vast.Sens(None, type='all')
+        inst_list.append(vast.Always(vast.SensList([sens]), statement))
 
         portslist = vast.Portlist([])
         self.ce = vast.ModuleDef("ce", None, portslist, inst_list)
