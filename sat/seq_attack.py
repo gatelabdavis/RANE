@@ -2,7 +2,7 @@ import argparse
 import logging
 import multiprocessing
 import time
-import pysmt.shortcuts as pystm
+import pysmt.shortcuts as pysmt
 from common.circuit import sort_circuits
 from file.bench import bench2circuit
 from sat.attack_comps import FormulaGenerator, get_formulas
@@ -86,9 +86,9 @@ class PyAttack:
         sort_circuits(self.oracle_cir, self.obf_cir)
 
         # perform attack
-        self.solver_obf = pystm.Solver(name=self.solver_name)
-        self.solver_key = pystm.Solver(name=self.solver_name)
-        self.solver_oracle = pystm.Solver(name=self.solver_name)
+        self.solver_obf = pysmt.Solver(name=self.solver_name)
+        self.solver_key = pysmt.Solver(name=self.solver_name)
+        self.solver_oracle = pysmt.Solver(name=self.solver_name)
 
         logging.warning('initial value for boundary={}, step={}, stop={}'.format(self.boundary, self.step, self.stop))
         logging.warning('solver={}'.format(self.solver_name))
@@ -125,7 +125,7 @@ class PyAttack:
                 logging.warning('iteration={}, depth={}'.format(self.iteration, self.unroll_depth))
                 self.highest_depth = self.unroll_depth
             else:
-                if (self.solver_obf.is_sat(pystm.TRUE()) or self.iteration == 0) and self.unroll_depth < self.stop:
+                if (self.solver_obf.is_sat(pysmt.TRUE()) or self.iteration == 0) and self.unroll_depth < self.stop:
                     # two agreeing keys are found, but no dip can be found
                     # also it should keep unrolling the circuit until at least one dip is found
                     #  then it can decide on uc success
@@ -167,11 +167,11 @@ class PyAttack:
         for d in range(1, self.unroll_depth + 1):
             dip_boolean = []
             for w in self.obf_cir.input_wires:
-                f = pystm.Symbol(w + '@{}'.format(d))
+                f = pysmt.Symbol(w + '@{}'.format(d))
                 if self.solver_obf.get_py_value(f):
-                    dip_boolean.append(pystm.TRUE())
+                    dip_boolean.append(pysmt.TRUE())
                 else:
-                    dip_boolean.append(pystm.FALSE())
+                    dip_boolean.append(pysmt.FALSE())
             dis_boolean.append(dip_boolean)
 
         return dis_boolean
@@ -188,15 +188,15 @@ class PyAttack:
             for i in range(len(c0)):
                 self.solver_oracle.add_assertion(c0[i])
 
-            self.solver_oracle.add_assertion(pystm.And(dis_formula[d - 1]))
-            if not self.solver_oracle.is_sat(pystm.TRUE()):
+            self.solver_oracle.add_assertion(pysmt.And(dis_formula[d - 1]))
+            if not self.solver_oracle.is_sat(pysmt.TRUE()):
                 logging.critical('something is wrong in oracle query')
                 exit()
             else:
                 dip_out = []
                 # for w in self.oracle_cir.output_wires:
                 for w in self.obf_cir.output_wires:
-                    f = pystm.Symbol(w + '@{}'.format(d))
+                    f = pysmt.Symbol(w + '@{}'.format(d))
                     dip_out.append(self.solver_oracle.get_value(f))
                 dis_out.append(dip_out)
         logging.info(dis_out)
@@ -211,26 +211,26 @@ class PyAttack:
             if d > 0:
                 dip_out = dis_out[d - 1]
                 for i in range(len(self.obf_cir.output_wires)):
-                    subs[pystm.Symbol(self.obf_cir.output_wires[i] + '_0@{}'.format(d))] = dip_out[i]
-                    subs[pystm.Symbol(self.obf_cir.output_wires[i] + '_1@{}'.format(d))] = dip_out[i]
+                    subs[pysmt.Symbol(self.obf_cir.output_wires[i] + '_0@{}'.format(d))] = dip_out[i]
+                    subs[pysmt.Symbol(self.obf_cir.output_wires[i] + '_1@{}'.format(d))] = dip_out[i]
 
                 dip_boolean = dis_boolean[d - 1]
                 for i in range(len(self.obf_cir.input_wires)):
-                    subs[pystm.Symbol(self.obf_cir.input_wires[i] + '@{}'.format(d))] = dip_boolean[i]
+                    subs[pysmt.Symbol(self.obf_cir.input_wires[i] + '@{}'.format(d))] = dip_boolean[i]
 
                 for i in range(len(self.obf_cir.next_state_wires)):
-                    subs[pystm.Symbol(self.obf_cir.next_state_wires[i] + '_0@{}'.format(d - 1))] = pystm.Symbol(self.obf_cir.next_state_wires[i] + '_0_{}@{}'.format(self.iteration, d - 1))
-                    subs[pystm.Symbol(self.obf_cir.next_state_wires[i] + '_1@{}'.format(d - 1))] = pystm.Symbol(self.obf_cir.next_state_wires[i] + '_1_{}@{}'.format(self.iteration, d - 1))
-                    subs[pystm.Symbol(self.obf_cir.next_state_wires[i] + '_0@{}'.format(d))] = pystm.Symbol(self.obf_cir.next_state_wires[i] + '_0_{}@{}'.format(self.iteration, d))
-                    subs[pystm.Symbol(self.obf_cir.next_state_wires[i] + '_1@{}'.format(d))] = pystm.Symbol(self.obf_cir.next_state_wires[i] + '_1_{}@{}'.format(self.iteration, d))
-                    subs[pystm.Symbol(self.obf_cir.state_wires[i] + '_0@{}'.format(d))] = pystm.Symbol(self.obf_cir.state_wires[i] + '_0_{}@{}'.format(self.iteration, d))
-                    subs[pystm.Symbol(self.obf_cir.state_wires[i] + '_1@{}'.format(d))] = pystm.Symbol(self.obf_cir.state_wires[i] + '_1_{}@{}'.format(self.iteration, d))
+                    subs[pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_0@{}'.format(d - 1))] = pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_0_{}@{}'.format(self.iteration, d - 1))
+                    subs[pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_1@{}'.format(d - 1))] = pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_1_{}@{}'.format(self.iteration, d - 1))
+                    subs[pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_0@{}'.format(d))] = pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_0_{}@{}'.format(self.iteration, d))
+                    subs[pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_1@{}'.format(d))] = pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_1_{}@{}'.format(self.iteration, d))
+                    subs[pysmt.Symbol(self.obf_cir.state_wires[i] + '_0@{}'.format(d))] = pysmt.Symbol(self.obf_cir.state_wires[i] + '_0_{}@{}'.format(self.iteration, d))
+                    subs[pysmt.Symbol(self.obf_cir.state_wires[i] + '_1@{}'.format(d))] = pysmt.Symbol(self.obf_cir.state_wires[i] + '_1_{}@{}'.format(self.iteration, d))
             else:
                 for i in range(len(self.obf_cir.next_state_wires)):
-                    subs[pystm.Symbol(self.obf_cir.next_state_wires[i] + '_0@{}'.format(d))] = pystm.Symbol(self.obf_cir.next_state_wires[i] + '_0_{}@{}'.format(self.iteration, d))
-                    subs[pystm.Symbol(self.obf_cir.next_state_wires[i] + '_1@{}'.format(d))] = pystm.Symbol(self.obf_cir.next_state_wires[i] + '_1_{}@{}'.format(self.iteration, d))
+                    subs[pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_0@{}'.format(d))] = pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_0_{}@{}'.format(self.iteration, d))
+                    subs[pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_1@{}'.format(d))] = pysmt.Symbol(self.obf_cir.next_state_wires[i] + '_1_{}@{}'.format(self.iteration, d))
 
-            c = pystm.substitute(pystm.And(c0 + c1 + c2), subs)
+            c = pysmt.substitute(pysmt.And(c0 + c1 + c2), subs)
             self.solver_obf.add_assertion(c)
             self.solver_key.add_assertion(c)
 
@@ -265,7 +265,7 @@ class PyAttack:
             key = ''
             for w in self.obf_cir.key_wires:
                 k = w + '_0'
-                if self.solver_key.get_py_value(pystm.Symbol(k)):
+                if self.solver_key.get_py_value(pysmt.Symbol(k)):
                     key += '1'
                 else:
                     key += '0'
