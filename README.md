@@ -15,7 +15,7 @@ and installation of this tool could be found in the [wiki](https://github.com/ga
 You can learn more about this tool in our paper which explains how we adapted formal verification tools to find the key
 inputs of logic locked circuits.
 
-[RANE: An Open-Source Formal De-obfuscation Attack for Reverse Engineering of Logic Encrypted Circuits](https://)
+[RANE: An Open-Source Formal De-obfuscation Attack for Reverse Engineering of Logic Encrypted Circuits](https://kamali.ece.ufl.edu/files/papers/c2021_glsvlsi.pdf)
 
 # Citation
 
